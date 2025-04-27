@@ -25,9 +25,9 @@ Ferramenta multifunção de testes de segurança, estresse e análise de redes.
 sudo apt update && sudo apt upgrade -y
 sudo apt install python3 python3-pip -y
 git clone https://github.com/Xedsszum/Vicious-2.0.git
-cd vicious-2.0
+cd Vicious-2.0
 pip3 install -r requirements.txt
-python vicious.py```
+python vicious.py
 ```
 # Para Termux (Android):
 
@@ -35,9 +35,9 @@ python vicious.py```
 pkg update && pkg upgrade -y
 pkg install python git -y
 git clone https://github.com/Xedsszum/Vicious-2.0.git
-cd vicious-2.0
+cd Vicious-2.0
 pip install -r requirements.txt
-python viciou.py
+python vicious.py
 ```
 
 # ⚠️ Aviso Legal
