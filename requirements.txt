@@ -1,4 +1,0 @@
-colorama
-tqdm
-fake-useragent
-requests
