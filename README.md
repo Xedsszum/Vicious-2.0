@@ -22,11 +22,11 @@ Ferramenta multifunção de testes de segurança, estresse e análise de redes.
 # Para Kali Linux (ou qualquer Linux):
 
 ```bash
-sudo apt update && sudo apt upgrade -y
-sudo apt install python3 python3-pip -y
 git clone https://github.com/Xedsszum/Vicious-2.0.git
 cd Vicious-2.0
-pip3 install -r requirements.txt
+pip install requests colorama
+pip install requests tqdm
+pip install requests fake-useragent
 python vicious.py
 ```
 # Para Termux (Android):
@@ -36,7 +36,9 @@ pkg update && pkg upgrade -y
 pkg install python git -y
 git clone https://github.com/Xedsszum/Vicious-2.0.git
 cd Vicious-2.0
-pip install -r requirements.txt
+pip install requests colorama
+pip install requests tqdm
+pip install requests fake-useragent
 python vicious.py
 ```
 
