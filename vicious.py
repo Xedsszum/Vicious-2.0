@@ -268,6 +268,7 @@ def exfiltrate_file():
 
 # Função do menu com todas as opções
 
+# Função para o menu
 def menu():
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -276,27 +277,27 @@ def menu():
 [2] Scanner de Portas
 [3] HTTP Flood
 [4] TCP SYN Flood
-[5] Modo Hardcore (HTTP + SYN + Portscan)
+[5] Modo Insano (HTTP + SYN + Portscan)
 [6] Brute Force
 [7] Scanner DNS
 [8] Web Crawler
 [9] Reconhecimento de Subdomínios
-[10] DDoS Attack
-[11] Flood UDP
-[12] Payload para Exploit
-[13] Backup de Arquivos Remotos
-[14] Scanner de Vulnerabilidades de Redes
-[15] Exfiltração de Dados
-[16] Força Bruta HTTP
-[17] Payload Reverso
-[18] Ataque XSS
-[19] Injeção SQL
-[20] Teste de Força Bruta em HTTP
-[21] Enviar Payload Reverso
-[22] Scanner de Vulnerabilidades com Nmap
-[23] Transferência de Arquivos Remotos
-[24] Payload Customizado
-[25] Exfiltração de Arquivo
+[10] Scanner de Vulnerabilidades
+[11] Exfiltração de Dados
+[12] Decodificador Base64
+[13] Decodificador MD5
+[14] Reconhecimento de Web Shell
+[15] Scanner de SSL
+[16] Sniffer de Pacotes
+[17] Ataque XSS
+[18] Injeção SQL
+[19] Teste de Força Bruta em HTTP
+[20] Enviar payload reverso
+[21] Scanner de Vulnerabilidades de Redes
+[22] Ataque de DDoS
+[23] Flood UDP
+[24] Payload para Exploit
+[25] Backup de Arquivos Remotos
 [0] Sair
 ''')
         choice = input(Fore.WHITE + "[+] Escolha uma opção: ")
@@ -320,37 +321,37 @@ def menu():
         elif choice == '9':
             subdomain_recognition()
         elif choice == '10':
-            ddos_attack()
+            scanner_vulnerabilidades()
         elif choice == '11':
-            udp_flood()
+            exfiltracao_dados()
         elif choice == '12':
-            payload_for_exploit()
+            base64_decoder()
         elif choice == '13':
-            remote_file_backup()
+            md5_decoder()
         elif choice == '14':
-            network_vulnerability_scanner()
+            reconhecimento_web_shell()
         elif choice == '15':
-            data_exfiltration()
+            scanner_ssl()
         elif choice == '16':
-            brute_force_http()
+            sniffer_pacotes()
         elif choice == '17':
-            reverse_payload()
+            ataque_xss()
         elif choice == '18':
-            xss_attack()
+            injecao_sql()
         elif choice == '19':
-            sql_injection()
+            brute_force_http()
         elif choice == '20':
-            test_http_brute_force()
+            enviar_payload_reverso()
         elif choice == '21':
-            reverse_shell_payload()
+            scanner_vulnerabilidades_rede()
         elif choice == '22':
-            nmap_scan()
+            ddos_attack()
         elif choice == '23':
-            file_transfer()
+            flood_udp()
         elif choice == '24':
-            custom_payload()
+            payload_exploit()
         elif choice == '25':
-            exfiltrate_file()
+            backup_arquivos_remotos()
         elif choice == '0':
             print(Fore.GREEN + "[+] Saindo...")
             break
@@ -358,6 +359,5 @@ def menu():
             print(Fore.RED + "[!] Opção inválida.")
             time.sleep(2)
 
-# Inicialização
-intro()
-menu()
+        # Pausar e voltar para o menu apenas quando o usuário pressionar Enter
+        input(Fore.WHITE + "\n[+] Pressione Enter para voltar ao menu...")
