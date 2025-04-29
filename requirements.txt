@@ -1,0 +1,8 @@
+requests
+colorama
+beautifulsoup4
+scapy
+dnspython
+pyOpenSSL
+tqdm
+fake-useragent
