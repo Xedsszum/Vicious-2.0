@@ -69,10 +69,10 @@ pip install -r requirements.txt
 # Para Kali Linux / Linux
 
 ```bash
-git clone https://github.com/seu-usuario/ViciousPainel.git
-cd ViciousPainel
+git clone https://github.com/Xedsszum/Vicious-2.0.git
+cd Vicious-2.0
 pip install -r requirements.txt
-python painel_vicious.py
+python vicious.py
 ```
 
 # Para Termux (Android)
@@ -80,10 +80,10 @@ python painel_vicious.py
 ```bash
 pkg update && pkg upgrade -y
 pkg install python git -y
-git clone https://github.com/seu-usuario/ViciousPainel.git
-cd ViciousPainel
+git clone https://github.com/Xedsszum/Vicious-2.0.git
+cd Vicious-2.0
 pip install -r requirements.txt
-python painel_vicious.py
+python vicious.py
 ```
 
 ---
