@@ -1,4 +1,4 @@
-# painel_vicious.py
+# vicious.py
 # Desenvolvido por: Vicious and Xedss
 
 # Biblioteca padrão do Python
