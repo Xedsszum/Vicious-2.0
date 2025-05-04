@@ -37,6 +37,7 @@ Desenvolvido para uso educativo e ambientes autorizados.
 📡 **Transferência de Arquivos** — Transferência segura entre hosts remotos.  
 🔑 **Payload Customizado** — Criação de payloads sob medida para exploits personalizados.  
 📂 **Exfiltração Avançada** — Extração de arquivos críticos para testes.
+💀 **Bot Raid** — Simula ataque interno, apagando canais e gerando spam automatizado.
 
 ---
 
